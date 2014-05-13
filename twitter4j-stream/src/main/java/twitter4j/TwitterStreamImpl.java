@@ -25,6 +25,7 @@ import java.util.List;
 
 import static twitter4j.HttpResponseCode.FORBIDDEN;
 import static twitter4j.HttpResponseCode.NOT_ACCEPTABLE;
+import static twitter4j.HttpResponseCode.ENHANCE_YOUR_CLAIM;
 
 /**
  * A java representation of the <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API: Methods</a><br>
@@ -533,6 +534,14 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                             }
                             if (te.getStatusCode() == NOT_ACCEPTABLE) {
                                 logger.warn("Parameter not accepted with the role. ", te.getMessage());
+                                closed = true;
+                                for (StreamListener statusListener : streamListeners) {
+                                    statusListener.onException(te);
+                                }
+                                break;
+                            }
+                            if (te.getStatusCode() == ENHANCE_YOUR_CLAIM) {
+                                logger.warn("API rate limited. ", te.getMessage());
                                 closed = true;
                                 for (StreamListener statusListener : streamListeners) {
                                     statusListener.onException(te);
