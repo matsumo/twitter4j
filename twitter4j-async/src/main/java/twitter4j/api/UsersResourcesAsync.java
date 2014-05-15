@@ -207,7 +207,7 @@ public interface UsersResourcesAsync {
      * Returns a list of user objects that the authenticating user is muting.
      * <br>This method calls https://api.twitter.com/1.1/mutes/users/list
      *
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/mutes/users/list">GET mutes/users/list | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/mutes/users/list">GET mutes/users/list | Twitter Developers</a>
      * @since Twitter4J 4.0.2
      */
     void getMutesList();
@@ -217,7 +217,7 @@ public interface UsersResourcesAsync {
      * <br>This method calls https://api.twitter.com/1.1/mutes/users/list
      *
      * @param cursor Causes the list of blocked users to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. If no cursor is provided, a value of -1 will be assumed, which is the first "page."
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/mutes/users/list">GET blocks/blocking | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/mutes/users/list">GET mutes/users/list | Twitter Developers</a>
      * @since Twitter4J 4.0.2
      */
     void getMutesList(long cursor);
@@ -226,7 +226,7 @@ public interface UsersResourcesAsync {
      * Returns an array of numeric user ids the authenticating user is muting.
      * <br>This method calls https://api.twitter.com/1.1/mutes/users/ids
      *
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/mutes/users/ids">GET blocks/ids | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/mutes/users/ids">GET mutes/users/ids | Twitter Developers</a>
      * @since Twitter4J 4.0.2
      */
     void getMutesIDs();
@@ -236,7 +236,7 @@ public interface UsersResourcesAsync {
      * <br>This method calls https://api.twitter.com/1.1/mutes/users/ids
      *
      * @param cursor Causes the list of muted users to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. If no cursor is provided, a value of -1 will be assumed, which is the first "page."
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/mutes/users/ids">GET blocks/ids | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/mutes/users/ids">GET mutes/users/ids | Twitter Developers</a>
      * @since Twitter4J 4.0.2
      */
     void getMutesIDs(long cursor);
@@ -245,14 +245,14 @@ public interface UsersResourcesAsync {
      * Mutes the user specified in the ID parameter as the authenticating user.  Returns the muted user in the requested format when successful.
      * <br>This method calls https://api.twitter.com/1.1/mutes/users/create
      *
-     * @param userId the screen_name of the user to mute
+     * @param userId the ID of the user to mute
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/mutes/users/create">POST mutes/users/create | Twitter Developers</a>
      * @since Twitter4J 4.0.2
      */
     void createMute(long userId);
 
     /**
-     * Mutes the user specified in the ID parameter as the authenticating user.  Returns the muted user in the requested format when successful.
+     * Mutes the user specified in the screen name parameter as the authenticating user.  Returns the muted user in the requested format when successful.
      * <br>This method calls https://api.twitter.com/1.1/mutes/users/create
      *
      * @param screenName the screen_name of the user to mute
@@ -272,7 +272,7 @@ public interface UsersResourcesAsync {
     void destroyMute(long userId);
 
     /**
-     * Un-mutes the user specified in the ID parameter as the authenticating user.  Returns the un-muted user in the requested format when successful.
+     * Un-mutes the user specified in the screen name parameter as the authenticating user.  Returns the un-muted user in the requested format when successful.
      * <br>This method calls https://api.twitter.com/1.1/mutes/users/destroy
      *
      * @param screenName the screen_name of the user to mute

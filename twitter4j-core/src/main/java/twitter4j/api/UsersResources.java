@@ -260,7 +260,7 @@ public interface UsersResources {
      *
      * @return a list of user objects that the authenticating user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/mutes/users/list">GET mutes/users/list | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/mutes/users/list">GET mutes/users/list | Twitter Developers</a>
      * @since Twitter4J 4.0.2
      */
     PagableResponseList<User> getMutesList() throws TwitterException;
@@ -269,10 +269,10 @@ public interface UsersResources {
      * Returns a list of user objects that the authenticating user is muting.
      * <br>This method calls https://api.twitter.com/1.1/mutes/users/list
      *
-     * @param cursor Causes the list of blocked users to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. If no cursor is provided, a value of -1 will be assumed, which is the first "page."
+     * @param cursor Causes the list of muted users to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. If no cursor is provided, a value of -1 will be assumed, which is the first "page."
      * @return a list of user objects that the authenticating user
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/mutes/users/list">GET blocks/blocking | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/mutes/users/list">GET blocks/blocking | Twitter Developers</a>
      * @since Twitter4J 4.0.2
      */
     PagableResponseList<User> getMutesList(long cursor) throws TwitterException;
@@ -283,7 +283,7 @@ public interface UsersResources {
      *
      * @return Returns an array of numeric user ids the authenticating user is muting.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/mutes/users/ids">GET blocks/ids | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/mutes/users/ids">GET blocks/ids | Twitter Developers</a>
      * @since Twitter4J 4.0.2
      */
     IDs getMutesIDs() throws TwitterException;
@@ -292,10 +292,10 @@ public interface UsersResources {
      * Returns an array of numeric user ids the authenticating user is muting.
      * <br>This method calls https://api.twitter.com/1.1/mutes/users/ids
      *
-     * @param cursor Causes the list of blocked users to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. If no cursor is provided, a value of -1 will be assumed, which is the first "page."
+     * @param cursor Causes the list of muted users to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. If no cursor is provided, a value of -1 will be assumed, which is the first "page."
      * @return Returns an array of numeric user ids the authenticating user is muting.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/mutes/users/ids">GET blocks/ids | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/mutes/users/ids">GET blocks/ids | Twitter Developers</a>
      * @since Twitter4J 4.0.2
      */
     IDs getMutesIDs(long cursor) throws TwitterException;
@@ -304,7 +304,7 @@ public interface UsersResources {
      * Mutes the user specified in the ID parameter as the authenticating user.  Returns the muted user in the requested format when successful.
      * <br>This method calls https://api.twitter.com/1.1/mutes/users/create
      *
-     * @param userId the screen_name of the user to mute
+     * @param userId the user_id of the user to mute
      * @return the muted user
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/mutes/users/create">POST mutes/users/create | Twitter Developers</a>
@@ -313,7 +313,7 @@ public interface UsersResources {
     User createMute(long userId) throws TwitterException;
 
     /**
-     * Mutes the user specified in the ID parameter as the authenticating user.  Returns the muted user in the requested format when successful.
+     * Mutes the user specified in the screen name parameter as the authenticating user.  Returns the muted user in the requested format when successful.
      * <br>This method calls https://api.twitter.com/1.1/mutes/users/create
      *
      * @param screenName the screen_name of the user to mute
@@ -337,7 +337,7 @@ public interface UsersResources {
     User destroyMute(long userId) throws TwitterException;
 
     /**
-     * Un-mutes the user specified in the ID parameter as the authenticating user.  Returns the un-muted user in the requested format when successful.
+     * Un-mutes the user specified in the screen name parameter as the authenticating user.  Returns the un-muted user in the requested format when successful.
      * <br>This method calls https://api.twitter.com/1.1/mutes/users/destroy
      *
      * @param screenName the screen_name of the user to mute
