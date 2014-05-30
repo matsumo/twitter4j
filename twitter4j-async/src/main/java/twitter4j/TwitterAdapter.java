@@ -236,7 +236,7 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     @Override
-    public void destroyeMute(User user) {
+    public void destroyedMute(User user) {
     }
 
     /* Suggested Users Resources */
