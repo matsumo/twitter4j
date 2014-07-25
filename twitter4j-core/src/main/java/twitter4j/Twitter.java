@@ -40,7 +40,8 @@ public interface Twitter extends java.io.Serializable,
         PlacesGeoResources,
         TrendsResources,
         SpamReportingResource,
-        HelpResources {
+        HelpResources,
+        UndocumentedActivityResources {
 
     /**
      * @since Twitter4J 3.0.4
@@ -111,4 +112,6 @@ public interface Twitter extends java.io.Serializable,
      * @since Twitter4J 3.0.4
      */
     HelpResources help();
+
+    UndocumentedActivityResources undocumentedActivity();
 }

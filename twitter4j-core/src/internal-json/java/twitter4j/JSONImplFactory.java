@@ -320,4 +320,9 @@ class JSONImplFactory implements ObjectFactory {
                 "conf=" + conf +
                 '}';
     }
+
+    @Override
+    public ResponseList<Activity> createActivityList(HttpResponse res) throws TwitterException {
+        return ActivityJSONImpl.createActivityList(res, conf);
+    }
 }

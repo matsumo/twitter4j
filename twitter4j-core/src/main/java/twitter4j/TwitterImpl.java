@@ -1652,4 +1652,31 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 "INCLUDE_MY_RETWEET=" + INCLUDE_MY_RETWEET +
                 '}';
     }
+
+    @Override
+    public UndocumentedActivityResources undocumentedActivity() {
+        return this;
+    }
+
+    @Override
+    public ResponseList<Activity> getActivitiesAboutMe() throws TwitterException {
+        return factory.createActivityList(get(conf.getRestBaseURL() + "activity/about_me.json"));
+    }
+
+    @Override
+    public ResponseList<Activity> getActivitiesAboutMe(Paging paging) throws TwitterException {
+        return factory.createActivityList(get(conf.getRestBaseURL()
+                + "activity/about_me.json", paging.asPostParameterArray()));
+    }
+
+    @Override
+    public ResponseList<Activity> getActivitiesByFriends() throws TwitterException {
+        return factory.createActivityList(get(conf.getRestBaseURL() + "activity/by_friends.json"));
+    }
+
+    @Override
+    public ResponseList<Activity> getActivitiesByFriends(Paging paging) throws TwitterException {
+        return factory.createActivityList(get(conf.getRestBaseURL()
+                + "activity/by_friends.json", paging.asPostParameterArray()));
+    }
 }
