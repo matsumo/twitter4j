@@ -167,28 +167,30 @@ class ActivityJSONImpl extends TwitterResponseImpl implements Activity {
 		}
 	}
 
-	/* package */
-	static ResponseList<Activity> createActivityList(final HttpResponse res, final Configuration conf)
-			throws TwitterException {
-		return createActivityList(res.asJSONArray(), res, conf);
-	}
-
-	/* package */
-	static ResponseList<Activity> createActivityList(final JSONArray list, final HttpResponse res,
-			final Configuration conf) throws TwitterException {
-		try {
-			final int size = list.length();
-			final ResponseList<Activity> users = new ResponseListImpl<Activity>(size, res);
-			for (int i = 0; i < size; i++) {
-				final JSONObject json = list.getJSONObject(i);
-				final Activity activity = new ActivityJSONImpl(json);
-				users.add(activity);
-			}
-			return users;
-		} catch (final JSONException jsone) {
-			throw new TwitterException(jsone);
-		} catch (final TwitterException te) {
-			throw te;
-		}
-	}
+    /* package */
+    static ResponseList<Activity> createActivityList(final HttpResponse res, final Configuration conf)
+            throws TwitterException {
+        try {
+            if (conf.isJSONStoreEnabled()) {
+                TwitterObjectFactory.clearThreadLocalMap();
+            }
+            final JSONArray list = res.asJSONArray();
+            final int size = list.length();
+            final ResponseList<Activity> users = new ResponseListImpl<Activity>(size, res);
+            for (int i = 0; i < size; i++) {
+                final JSONObject jsona = list.getJSONObject(i);
+                final Activity activity = new ActivityJSONImpl(jsona);
+                users.add(activity);
+                if (conf.isJSONStoreEnabled()) {
+                    TwitterObjectFactory.registerJSONObject(activity, jsona);
+                }
+            }
+            if (conf.isJSONStoreEnabled()) {
+                TwitterObjectFactory.registerJSONObject(users, list);
+            }
+            return users;
+        } catch (final JSONException jsone) {
+            throw new TwitterException(jsone);
+        }
+    }
 }
