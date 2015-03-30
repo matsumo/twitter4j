@@ -130,7 +130,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
 
     /**
      * Return the user associated with the status.<br>
-     * This can be null if the instance if from User.getStatus().
+     * This can be null if the instance is from User.getStatus().
      *
      * @return the user
      */
@@ -202,4 +202,12 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      * @since Twitter4J 3.0.6
      */
     Scopes getScopes();
+
+    /**
+     *  Returns the list of country codes where the tweet is withheld
+     *
+     *  @return list of country codes where the tweet is withheld - null if not withheld
+     *  @since Twitter4j 4.0.3
+     */
+    String[] getWithheldInCountries();
 }

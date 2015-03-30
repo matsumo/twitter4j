@@ -30,6 +30,7 @@ Blake Barnes <blake.barnes at gmail.com>
 Borja Fernández @BorjaL
 Bruno Torres Goyanna <bgoyanna at gmail.com> @bgoyanna
 Chris Nix
+Chris Romary
 Ciaran Jessup <ciaranj at gmail.com> @ciaran_j
 Cole Wen <wennnnke at gmail.com> @Pigwen
 Dan Checkoway <dcheckoway at gmail.com>
@@ -59,6 +60,7 @@ John Corwin <jcorwin at twitter.com> @johnxorz
 John Sirois <jsirois at twitter.com> @johnsirois
 Julien Letrouit <julien.letrouit at gmail.com> @jletroui
 Keiichi Hirano <hirano.kei1 at gmail.com> @haushinka2dx
+Kenji Yoshida <6b656e6a69 at gmail.com> @xuwei_k
 Komiya Atsushi <komiya.atsushi at gmail.com> @komiya_atsushi
 Linker Lin <linker.lin at live.com>
 Ludovico Fischer @ludovicofischer
@@ -77,8 +79,10 @@ Nobutoshi Ogata <n-ogata at cnt.biglobe.co.jp> @nobu666
 Norbert Bartels <n.bartels at phpmonkeys.de>
 Nicolas Bouillon <nicolas at bouil.org>
 Nicholas Dellamaggiore <nick.dellamaggiore at gmail.com> @nickdella
+Nils Haldenwang @nilshaldenwang
 Niv Singer <niv at innerlogics.com> @nivs
 Pierre Lanvin <pierre.lanvin@gmail.com> @planvin
+Pieter Meiresone @_MPieter
 Perry Sakkaris <psakkaris at gmail.com>
 Rajesh Koilpillai <rajesh.koilpillai at gmail.com> @rajeshkp
 Roberto Estrada <robestradac at gmail.com>
@@ -95,12 +99,17 @@ Q.P.Liu <qpliu at yahoo.com>
 Rémy Rakic <remy.rakic at gmail.com> @lqd
 Talal Ahmed <talal at venexel.ca>
 Takao Nakaguchi <takao.nakaguchi at gmail.com> @takawitter
+Takatoshi Murakami
+Takuro Yamane <alalwww at awairo.net> @alalwww
 Tomasz Nurkiewicz @tnurkiewicz
 Tomoaki Iwasaki <multicolorworld.shinku at gmail.com> @MulticolorWorld
+Tomoaki Takezoe <sumito3478 at gmail.com> @sumito3478
 Tomohisa Igarashi <tm.igarashi at gmail.com>
 Tyler MacLeod
 Will Glozer <will at glozer.net> @ar3te
 William Morgan <william at twitter.com> @wm
+William O'Hanley <william at wohanley.com> @wohanley
+William Vanderhoef <william.vanderhoef at gmail.com> @thePoofy
 withgod <noname at withgod.jp> @withgod
 Yusuke Yamamoto <yusuke at mac.com> @yusuke
 Yuto Uehara <mumei.himazin at gmail.com> @mumei_himazin

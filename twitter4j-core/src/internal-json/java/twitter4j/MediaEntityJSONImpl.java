@@ -24,14 +24,15 @@ import java.util.Map;
  */
 public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     private static final long serialVersionUID = 3609683338035442290L;
-    private long id;
-    private String url;
-    private String mediaURL;
-    private String mediaURLHttps;
-    private String expandedURL;
-    private String displayURL;
-    private Map<Integer, MediaEntity.Size> sizes;
-    private String type;
+    protected long id;
+    protected String url;
+    protected String mediaURL;
+    protected String mediaURLHttps;
+    protected String expandedURL;
+    protected String displayURL;
+    protected Map<Integer, MediaEntity.Size> sizes;
+    protected String type;
+
 
     MediaEntityJSONImpl(JSONObject json) throws TwitterException {
         try {
@@ -56,6 +57,7 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
             if (!json.isNull("type")) {
                 this.type = json.getString("type");
             }
+
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
@@ -132,6 +134,11 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
         int width;
         int height;
         int resize;
+        
+        /* For serialization purposes only. */
+		/* package */
+		Size() {
+		}
 
         Size(JSONObject json) throws JSONException {
             width = json.getInt("w");

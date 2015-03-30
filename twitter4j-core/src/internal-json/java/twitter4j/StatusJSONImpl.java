@@ -57,11 +57,12 @@ import static twitter4j.ParseUtil.getDate;
     private URLEntity[] urlEntities;
     private HashtagEntity[] hashtagEntities;
     private MediaEntity[] mediaEntities;
-    private MediaEntity[] extendedMediaEntities;
+    private ExtendedMediaEntity[] extendedMediaEntities;
     private SymbolEntity[] symbolEntities;
     private long currentUserRetweetId = -1L;
     private Scopes scopes;
     private User user = null;
+    private String[] withheldInCountries = null;
 
     /*package*/StatusJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
@@ -178,9 +179,9 @@ import static twitter4j.ParseUtil.getDate;
                 if (!extendedEntities.isNull("media")) {
                     JSONArray mediaArray = extendedEntities.getJSONArray("media");
                     final int len = mediaArray.length();
-                    extendedMediaEntities = new MediaEntity[len];
+                    extendedMediaEntities = new ExtendedMediaEntity[len];
                     for (int i = 0; i < len; i++) {
-                        extendedMediaEntities[i] = new MediaEntityJSONImpl(mediaArray.getJSONObject(i));
+                        extendedMediaEntities[i] = new ExtendedMediaEntityJSONImpl(mediaArray.getJSONObject(i));
                     }
                 }
             }
@@ -190,7 +191,7 @@ import static twitter4j.ParseUtil.getDate;
             hashtagEntities = hashtagEntities == null ? new HashtagEntity[0] : hashtagEntities;
             symbolEntities = symbolEntities == null ? new SymbolEntity[0] : symbolEntities;
             mediaEntities = mediaEntities == null ? new MediaEntity[0] : mediaEntities;
-            extendedMediaEntities = extendedMediaEntities == null ? new MediaEntity[0] : extendedMediaEntities;
+            extendedMediaEntities = extendedMediaEntities == null ? new ExtendedMediaEntity[0] : extendedMediaEntities;
             text = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), userMentionEntities,
                     urlEntities, hashtagEntities, mediaEntities);
             if (!json.isNull("current_user_retweet")) {
@@ -210,6 +211,14 @@ import static twitter4j.ParseUtil.getDate;
                         placeIds[i] = placeIdsArray.getString(i);
                     }
                     scopes = new ScopesImpl(placeIds);
+                }
+            }
+            if (!json.isNull("withheld_in_countries")){
+                JSONArray withheld_in_countries = json.getJSONArray("withheld_in_countries");
+                int length = withheld_in_countries.length();
+                withheldInCountries = new String[length];
+                for (int i = 0 ; i < length; i ++) {
+                    withheldInCountries[i] = withheld_in_countries.getString(i);
                 }
             }
         } catch (JSONException jsone) {
@@ -355,7 +364,7 @@ import static twitter4j.ParseUtil.getDate;
     }
 
     @Override
-    public MediaEntity[] getExtendedMediaEntities() {
+    public ExtendedMediaEntity[] getExtendedMediaEntities() {
         return extendedMediaEntities;
     }
 
@@ -366,6 +375,11 @@ import static twitter4j.ParseUtil.getDate;
 
     public Scopes getScopes() {
         return scopes;
+    }
+
+    @Override
+    public String[] getWithheldInCountries() {
+        return withheldInCountries;
     }
 
     public String getLang() {
@@ -442,6 +456,7 @@ import static twitter4j.ParseUtil.getDate;
                 ", symbolEntities=" + Arrays.toString(symbolEntities) +
                 ", currentUserRetweetId=" + currentUserRetweetId +
                 ", user=" + user +
+                ", withHeldInCountries=" + Arrays.toString(withheldInCountries)+
                 '}';
     }
 }

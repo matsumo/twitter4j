@@ -2602,6 +2602,22 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
+    public void getOAuthRequestTokenAsync(final String callbackURL, final String xAuthAccessType, final String xAuthMode) {
+        getDispatcher().invokeLater(new AsyncTask(OAUTH_REQUEST_TOKEN, listeners) {
+            @Override
+            public void invoke(List<TwitterListener> listeners) throws TwitterException {
+                RequestToken token = twitter.getOAuthRequestToken(callbackURL, xAuthAccessType, xAuthMode);
+                for (TwitterListener listener : listeners) {
+                    try {
+                        listener.gotOAuthRequestToken(token);
+                    } catch (Exception ignore) {
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
     public void getOAuthAccessTokenAsync() {
         getDispatcher().invokeLater(new AsyncTask(OAUTH_ACCESS_TOKEN, listeners) {
             @Override
@@ -2681,7 +2697,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
-    private static transient Dispatcher dispatcher;
+    private static transient volatile Dispatcher dispatcher;
 
     @Override
     public void shutdown() {

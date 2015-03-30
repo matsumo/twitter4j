@@ -30,22 +30,22 @@ import java.lang.reflect.Field;
  * @author Hiroaki Takeuchi - takke30 at gmail.com
  * @since Twitter4J 3.0.6
  */
-public class SpdyHttpClientTest extends TestCase {
+public class Http2ClientTest extends TestCase {
 
     // specify running order
     public static Test suite() {
 
         TestSuite suite = new TestSuite();
 
-        suite.addTest(new SpdyHttpClientTest("testNoPreferOption"));    // must be called first
-        suite.addTest(new SpdyHttpClientTest("testHttp2"));
-        suite.addTest(new SpdyHttpClientTest("testSpdy"));
-        suite.addTest(new SpdyHttpClientTest("testNoSpdy"));
+        suite.addTest(new Http2ClientTest("testNoPreferOption"));    // must be called first
+        suite.addTest(new Http2ClientTest("testHttp2"));
+        suite.addTest(new Http2ClientTest("testSpdy"));
+        suite.addTest(new Http2ClientTest("testNoSpdy"));
 
         return suite;
     }
 
-    public SpdyHttpClientTest(String name) {
+    public Http2ClientTest(String name) {
         super(name);
     }
 
@@ -56,7 +56,7 @@ public class SpdyHttpClientTest extends TestCase {
         AlternativeHttpClientImpl http = callOembed();
 
         // check HTTP/2.0
-        Field f = http.getClass().getDeclaredField("client");
+        Field f = http.getClass().getDeclaredField("okHttpClient");
         f.setAccessible(true);
         OkHttpClient client = (OkHttpClient) f.get(http);
         assertNotNull("ensure that OkHttpClient is used", client);
@@ -64,9 +64,9 @@ public class SpdyHttpClientTest extends TestCase {
         ConnectionPool p = client.getConnectionPool();
         assertEquals(1, p.getConnectionCount());
         assertEquals(0, p.getHttpConnectionCount());
-        assertEquals(1, p.getSpdyConnectionCount());
+        assertEquals(1, p.getMultiplexedConnectionCount());
 
-        assertEquals("HTTP-draft-09/2.0", http.getLastRequestProtocol());
+        assertEquals("h2", http.getLastRequestProtocol());
     }
 
     public void testSpdy() throws Exception {
@@ -75,7 +75,7 @@ public class SpdyHttpClientTest extends TestCase {
         AlternativeHttpClientImpl http = callOembed();
 
         // check SPDY
-        Field f = http.getClass().getDeclaredField("client");
+        Field f = http.getClass().getDeclaredField("okHttpClient");
         f.setAccessible(true);
         OkHttpClient client = (OkHttpClient) f.get(http);
         assertNotNull("ensure that OkHttpClient is used", client);
@@ -83,7 +83,7 @@ public class SpdyHttpClientTest extends TestCase {
         ConnectionPool p = client.getConnectionPool();
         assertEquals(1, p.getConnectionCount());
         assertEquals(0, p.getHttpConnectionCount());
-        assertEquals(1, p.getSpdyConnectionCount());
+        assertEquals(1, p.getMultiplexedConnectionCount());
 
         assertEquals("spdy/3.1", http.getLastRequestProtocol());
     }
@@ -94,7 +94,7 @@ public class SpdyHttpClientTest extends TestCase {
         AlternativeHttpClientImpl http = callOembed();
 
         // check HTTP/2.0
-        Field f = http.getClass().getDeclaredField("client");
+        Field f = http.getClass().getDeclaredField("okHttpClient");
         f.setAccessible(true);
         OkHttpClient client = (OkHttpClient) f.get(http);
         assertNotNull("ensure that OkHttpClient is used", client);
@@ -102,9 +102,9 @@ public class SpdyHttpClientTest extends TestCase {
         ConnectionPool p = client.getConnectionPool();
         assertEquals(1, p.getConnectionCount());
         assertEquals(0, p.getHttpConnectionCount());
-        assertEquals(1, p.getSpdyConnectionCount());
+        assertEquals(1, p.getMultiplexedConnectionCount());
 
-        assertEquals("HTTP-draft-09/2.0", http.getLastRequestProtocol());
+        assertEquals("h2", http.getLastRequestProtocol());
     }
 
     public void testNoSpdy() throws Exception {
@@ -114,10 +114,16 @@ public class SpdyHttpClientTest extends TestCase {
         AlternativeHttpClientImpl http = callOembed();
 
         // check not SPDY
-        Field f = http.getClass().getDeclaredField("client");
+        Field f = http.getClass().getDeclaredField("okHttpClient");
         f.setAccessible(true);
         OkHttpClient client = (OkHttpClient) f.get(http);
-        assertNull(client);     // OkHttpClient was NOT used
+
+        ConnectionPool p = client.getConnectionPool();
+        assertEquals(1, p.getConnectionCount());
+        assertEquals(1, p.getHttpConnectionCount());
+        assertEquals(0, p.getMultiplexedConnectionCount());
+
+        assertEquals("http/1.1", http.getLastRequestProtocol());
     }
 
     private AlternativeHttpClientImpl callOembed() throws TwitterException, JSONException {

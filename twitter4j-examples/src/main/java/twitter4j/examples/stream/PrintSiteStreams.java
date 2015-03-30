@@ -176,6 +176,18 @@ public final class PrintSiteStreams {
         }
 
         @Override
+        public void onUserDeletion(long forUser, long deletedUser) {
+            System.out.println("onUserDeletion for_user:" + forUser
+                    + " user:@");
+        }
+
+        @Override
+        public void onUserSuspension(long forUser, long suspendedUser) {
+            System.out.println("onUserSuspension for_user:" + forUser
+                    + " user:@" + suspendedUser);
+        }
+
+        @Override
         public void onBlock(long forUser, User source, User blockedUser) {
             System.out.println("onBlock for_user:" + forUser
                     + " source:@" + source.getScreenName()
