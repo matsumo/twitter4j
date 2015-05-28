@@ -13,28 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package twitter4j;
 
-import java.io.Serializable;
+package twitter4j.examples.lambda;
+
+import twitter4j.*;
 
 /**
- * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 3.0.4
+ * example code to explain lambda expression for handling rate limits
  */
-public interface SymbolEntity extends TweetEntity, Serializable {
-    /**
-     * Returns the index of the start character of the symbol.
-     *
-     * @return the index of the start character of the symbol
-     */
-    @Override
-    int getStart();
-
-    /**
-     * Returns the index of the end character of the symbol.
-     *
-     * @return the index of the end character of the symbol
-     */
-    @Override
-    int getEnd();
+public class TwitterStreamLambda {
+    public static void main(String... args) {
+        TwitterStreamFactory.getSingleton()
+            .onStatus(e -> System.out.println(e.getText()))
+            .sample();
+    }
 }

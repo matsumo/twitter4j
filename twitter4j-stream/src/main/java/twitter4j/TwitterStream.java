@@ -16,6 +16,7 @@
 package twitter4j;
 
 import twitter4j.auth.OAuthSupport;
+import twitter4j.util.function.Consumer;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -35,6 +36,18 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * @since Twitter4J 2.1.8
      */
     void addListener(StreamListener listener);
+
+    /**
+     * @param action action when receiving Status
+     * @since Twitter4J 4.0.4
+     */
+    TwitterStream onStatus(Consumer<Status> action);
+
+    /**
+     * @param action action when receiving TwitterException
+     * @since Twitter4J 4.0.4
+     */
+    TwitterStream onException(Consumer<Exception> action);
 
     /**
      * @param listener listener to remove
