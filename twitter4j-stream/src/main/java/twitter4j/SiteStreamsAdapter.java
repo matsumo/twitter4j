@@ -91,6 +91,14 @@ public class SiteStreamsAdapter implements SiteStreamsListener {
     }
 
     @Override
+    public void onRetweetedRetweet(User source, User target, Status retweetedStatus) {
+    }
+
+    @Override
+    public void onFavoritedRetweet(User source, User target, Status favoritedStatus) {
+    }
+
+    @Override
     public void onDisconnectionNotice(String screenName) {
     }
 
