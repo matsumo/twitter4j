@@ -17,6 +17,7 @@ package twitter4j;
 
 import twitter4j.auth.Authorization;
 import twitter4j.conf.Configuration;
+import twitter4j.util.function.Consumer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -200,7 +201,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
     /**
      * Returns a stream of random sample of all public statuses. The default access level provides a small proportion of the Firehose. The "Gardenhose" access level provides a proportion more suitable for data mining and research applications that desire a larger proportion to be statistically significant sample.
-     *
+     * <p>
      * Only returns tweets in the given languages
      *
      * @return StatusStream
@@ -219,6 +220,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         }
     }
 
+    @Override
     public void user() {
         user(null);
     }
@@ -322,6 +324,11 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         });
     }
 
+    @Override
+    public void filter(final String... track) {
+        filter(new FilterQuery().track(track));
+    }
+
     /**
      * Returns public statuses that match one or more filter predicates. At least one predicate parameter, follow, locations, or track must be specified. Multiple parameters may be specified which allows most clients to use a single connection to the Streaming API. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>
      * The default access level allows up to 200 track keywords, 400 follow userids and 10 1-degree location boxes. Increased access levels allow 80,000 follow userids ("shadow" role), 400,000 follow userids ("birddog" role), 10,000 track keywords ("restricted track" role),  200,000 track keywords ("partner track" role), and 200 10-degree location boxes ("locRestricted" role). Increased track access levels also pass a higher proportion of statuses before limiting the stream.
@@ -404,6 +411,30 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     public synchronized void addListener(StreamListener listener) {
         streamListeners.add(listener);
         updateListeners();
+    }
+
+    @Override
+    public synchronized TwitterStream onStatus(final Consumer<Status> action) {
+        streamListeners.add(new StatusAdapter() {
+            @Override
+            public void onStatus(Status status) {
+                action.accept(status);
+            }
+        });
+        updateListeners();
+        return this;
+    }
+
+    @Override
+    public synchronized TwitterStream onException(final Consumer<Exception> action) {
+        streamListeners.add(new StatusAdapter() {
+            @Override
+            public void onException(Exception ex) {
+                action.accept(ex);
+            }
+        });
+        updateListeners();
+        return this;
     }
 
     @Override
@@ -543,7 +574,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                                 stream.onException(e, this.streamListeners, this.rawStreamListeners);
                                 throw e;
                             } catch (Exception e) {
-                                if (!(e instanceof NullPointerException) && !e.getMessage().equals("Inflater has been closed")) {
+                                if (!(e instanceof NullPointerException) && !"Inflater has been closed".equals(e.getMessage())) {
                                     logger.info(e.getMessage());
                                     stream.onException(e, this.streamListeners, this.rawStreamListeners);
                                     closed = true;

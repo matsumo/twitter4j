@@ -39,8 +39,6 @@ import static twitter4j.TwitterMethod.*;
  * Currently this class is not carefully designed to be extended. It is suggested to extend this class only for mock testing purporse.<br>
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @see {@link twitter4j.AsyncTwitter}
- * @see {@link twitter4j.TwitterListener}
  */
 class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     private static final long serialVersionUID = 6491978434917152443L;
@@ -201,8 +199,10 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
+    @Override
     public void getRetweetsOfMe() {
         getDispatcher().invokeLater(new AsyncTask(RETWEETS_OF_ME, listeners) {
+            @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 ResponseList<Status> statuses = twitter.getRetweetsOfMe();
                 for (TwitterListener listener : listeners) {
@@ -215,8 +215,10 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         });
     }
 
+    @Override
     public void getRetweetsOfMe(final Paging paging) {
         getDispatcher().invokeLater(new AsyncTask(RETWEETS_OF_ME, listeners) {
+            @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 ResponseList<Status> statuses = twitter.getRetweetsOfMe(paging);
                 for (TwitterListener listener : listeners) {
@@ -344,7 +346,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void lookup(final long[] ids) {
+    public void lookup(final long... ids) {
         getDispatcher().invokeLater(new AsyncTask(RETWEET_STATUS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -609,7 +611,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
 
 
     @Override
-    public void lookupFriendships(final long[] ids) {
+    public void lookupFriendships(final long... ids) {
         getDispatcher().invokeLater(new AsyncTask(LOOKUP_FRIENDSHIPS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -625,7 +627,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void lookupFriendships(final String[] screenNames) {
+    public void lookupFriendships(final String... screenNames) {
         getDispatcher().invokeLater(new AsyncTask(LOOKUP_FRIENDSHIPS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -1290,7 +1292,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void lookupUsers(final long[] ids) {
+    public void lookupUsers(final long... ids) {
         getDispatcher().invokeLater(new AsyncTask(LOOKUP_USERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -1306,7 +1308,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void lookupUsers(final String[] screenNames) {
+    public void lookupUsers(final String... screenNames) {
         getDispatcher().invokeLater(new AsyncTask(LOOKUP_USERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -1947,7 +1949,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
 
 
     @Override
-    public void createUserListMembers(final long listId, final long[] userIds) {
+    public void createUserListMembers(final long listId, final long... userIds) {
         getDispatcher().invokeLater(new AsyncTask(CREATE_LIST_MEMBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -1963,7 +1965,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void createUserListMembers(final long ownerId, final String slug, final long[] userIds) {
+    public void createUserListMembers(final long ownerId, final String slug, final long... userIds) {
         getDispatcher().invokeLater(new AsyncTask(CREATE_LIST_MEMBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -1979,7 +1981,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void createUserListMembers(final long listId, final String[] screenNames) {
+    public void createUserListMembers(final long listId, final String... screenNames) {
         getDispatcher().invokeLater(new AsyncTask(CREATE_LIST_MEMBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -1995,7 +1997,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void createUserListMembers(final long ownerId, final String slug, final String[] screenNames) {
+    public void createUserListMembers(final long ownerId, final String slug, final String... screenNames) {
         getDispatcher().invokeLater(new AsyncTask(CREATE_LIST_MEMBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
@@ -2375,6 +2377,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     @Override
     public void getPlaceTrends(final int woeid) {
         getDispatcher().invokeLater(new AsyncTask(PLACE_TRENDS, listeners) {
+            @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
                 Trends trends = twitter.getPlaceTrends(woeid);
                 for (TwitterListener listener : listeners) {
@@ -2772,6 +2775,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         twitter.setOAuthAccessToken(accessToken);
     }
 
+    @Override
     public AccessToken getOAuthAccessToken(String screenName, String password) throws TwitterException {
         return twitter.getOAuthAccessToken(screenName, password);
     }

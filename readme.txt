@@ -49,6 +49,7 @@ Hiroaki Takeuchi <takke30 at gmail.com> @takke
 Hiroki Takemoto <pompopo at gmail.com> @pompopo
 Hiroshi Sugimori <mamamadata at gmail.com> @ham1975
 Hitoshi Kunimatsu <hkhumanoid at gmail.com>
+Igor Brigadir <igor.brigadir at insight-centre.org> @igorbrigadir
 JJ Kelley <jjthemachine at gmail.com> @jjthemachine
 Jacob Elder <jacob.elder@gmail.com> @jelder
 Jacob S. Hoffman-Andrews <jsha at twitter.com> @j4cob
@@ -59,6 +60,7 @@ Joe Sondow @JoeSondow
 John Corwin <jcorwin at twitter.com> @johnxorz
 John Sirois <jsirois at twitter.com> @johnsirois
 Julien Letrouit <julien.letrouit at gmail.com> @jletroui
+Jumpei Matsuda <j.matsuda.bb26th at gmail.com> @fat_daruuuuma
 Keiichi Hirano <hirano.kei1 at gmail.com> @haushinka2dx
 Kenji Yoshida <6b656e6a69 at gmail.com> @xuwei_k
 Komiya Atsushi <komiya.atsushi at gmail.com> @komiya_atsushi

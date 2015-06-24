@@ -13,28 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package twitter4j;
+package twitter4j.util.function;
 
-import java.io.Serializable;
 
 /**
- * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 3.0.4
+ * Functional interface for handling TwitterExceptions
+ * @since Twitter4J 4.0.4
  */
-public interface SymbolEntity extends TweetEntity, Serializable {
-    /**
-     * Returns the index of the start character of the symbol.
-     *
-     * @return the index of the start character of the symbol
-     */
-    @Override
-    int getStart();
-
-    /**
-     * Returns the index of the end character of the symbol.
-     *
-     * @return the index of the end character of the symbol
-     */
-    @Override
-    int getEnd();
+public interface Consumer<T> {
+    void accept(T t);
 }

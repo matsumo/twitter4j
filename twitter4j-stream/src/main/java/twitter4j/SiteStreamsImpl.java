@@ -39,6 +39,7 @@ final class SiteStreamsImpl extends StatusStreamBase {
         this.cs = cs;
     }
 
+    @Override
     protected String parseLine(String line) {
         if ("".equals(line) || null == line) {
             return line;
@@ -249,6 +250,20 @@ final class SiteStreamsImpl extends StatusStreamBase {
     protected void onUnblock(final JSONObject source, final JSONObject target, StreamListener[] listeners) throws TwitterException {
         for (StreamListener listener : listeners) {
             ((SiteStreamsListener) listener).onUnblock(forUser.get(), asUser(source), asUser(target));
+        }
+    }
+
+    @Override
+    void onRetweetedRetweet(JSONObject source, JSONObject target, JSONObject targetObject, StreamListener[] listeners) throws TwitterException {
+        for (StreamListener listener : listeners) {
+            ((SiteStreamsListener) listener).onRetweetedRetweet(asUser(source), asUser(target), asStatus(targetObject));
+        }
+    }
+
+    @Override
+    void onFavoritedRetweet(JSONObject source, JSONObject target, JSONObject targetObject, StreamListener[] listeners) throws TwitterException {
+        for (StreamListener listener : listeners) {
+            ((SiteStreamsListener) listener).onFavoritedRetweet(asUser(source), asUser(target), asStatus(targetObject));
         }
     }
 

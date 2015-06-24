@@ -85,6 +85,7 @@ public class UsersResourcesTest extends TwitterTestBase {
 
         assertTrue(1 <= user.getListedCount());
         assertFalse(user.isFollowRequestSent());
+        assertEquals(user, twitter1.showUser("@yusuke"));
 
         //test case for TFJ-91 null pointer exception getting user detail on users with no statuses
         //http://yusuke.homeip.net/jira/browse/TFJ-91
@@ -108,12 +109,12 @@ public class UsersResourcesTest extends TwitterTestBase {
     }
 
     public void testLookupUsers() throws TwitterException {
-        ResponseList<User> users = twitter1.lookupUsers(new String[]{id1.screenName, id2.screenName});
+        ResponseList<User> users = twitter1.lookupUsers(id1.screenName, id2.screenName);
         assertEquals(2, users.size());
         assertContains(users, id1);
         assertContains(users, id2);
 
-        users = twitter1.lookupUsers(new long[]{id1.id, id2.id});
+        users = twitter1.lookupUsers(id1.id, id2.id);
         assertEquals(2, users.size());
         assertContains(users, id1);
         assertContains(users, id2);
@@ -279,6 +280,14 @@ public class UsersResourcesTest extends TwitterTestBase {
         User user2 = twitter2.destroyBlock(id1.screenName);
         assertNotNull(TwitterObjectFactory.getRawJSON(user2));
         assertEquals(user2, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user2)));
+
+        user1 = twitter2.createBlock("@"+id1.screenName);
+        assertNotNull(TwitterObjectFactory.getRawJSON(user1));
+        assertEquals(user1, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user1)));
+        user2 = twitter2.destroyBlock("@"+id1.screenName);
+        assertNotNull(TwitterObjectFactory.getRawJSON(user2));
+        assertEquals(user2, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user2)));
+
         PagableResponseList<User> users = twitter1.getBlocksList();
         assertNotNull(TwitterObjectFactory.getRawJSON(users));
         assertEquals(users.get(0), TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(users.get(0))));
@@ -302,6 +311,19 @@ public class UsersResourcesTest extends TwitterTestBase {
         User user2 = twitter2.destroyMute(id1.screenName);
         assertNotNull(TwitterObjectFactory.getRawJSON(user2));
         assertEquals(user2, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user2)));
+
+        user1 = twitter2.createMute("@"+id1.screenName);
+        assertNotNull(TwitterObjectFactory.getRawJSON(user1));
+        assertEquals(user1, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user1)));
+        try {
+            user2 = twitter2.destroyMute("@"+id1.screenName);
+//            assertNotNull(TwitterObjectFactory.getRawJSON(user2));
+//            assertEquals(user2, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user2)));
+        } catch (TwitterException e) {
+//          The request with '@'+screen_name could not make mute user.
+            assertEquals(e.getStatusCode(), 403);
+            assertEquals(e.getErrorCode(), 272);
+        }
 
         twitter1.createMute(twit4jblockID);
         PagableResponseList<User> users = twitter1.getMutesList(-1L);

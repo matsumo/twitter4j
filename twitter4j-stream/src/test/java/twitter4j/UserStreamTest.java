@@ -90,7 +90,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
 
         //twit4j: id1.id
         //twit4j2: 6377362
-        twitterStream.user(new String[]{"BAh7CToPY3JlYXR"});
+        twitterStream.user("BAh7CToPY3JlYXR");
         //expecting onFriendList for twit4j and twit4j2
         waitForStatus("friend list", "onfriendlist");
 
@@ -156,7 +156,7 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         waitForStatus("deletedUserListMember", DESTROY_LIST_MEMBER);
 
         twitter2.destroyUserListSubscription(list.getId());
-        waitForStatus("destroiedUserListSubscription", UNSUBSCRIBE_LIST);
+        waitForStatus("destroyedUserListSubscription", UNSUBSCRIBE_LIST);
 
         twitter1.destroyUserList(list.getId());
         waitForStatus("destroyedUserList", DESTROY_USER_LIST);
@@ -422,6 +422,34 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
         received.add(new Object[]{DESTROY_BLOCK, source, unblockedUser});
         Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
         Assert.assertNotNull(TwitterObjectFactory.getRawJSON(unblockedUser));
+        notifyResponse();
+    }
+
+    @Override
+    public void onRetweetedRetweet(User source, User target, Status retweetedStatus) {
+        System.out.println("onRetweetedRetweet");
+        received.add(new Object[]{"retweeted_retweet", source, target, retweetedStatus});
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(target));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(retweetedStatus));
+        notifyResponse();
+    }
+
+    @Override
+    public void onFavoritedRetweet(User source, User target, Status favoritedStatus) {
+        received.add(new Object[]{"favorited_retweet", source, target, favoritedStatus});
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(target));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(favoritedStatus));
+        notifyResponse();
+    }
+
+    @Override
+    public void onQuotedTweet(User source, User target, Status quotedStatus) {
+        received.add(new Object[]{"quoted_tweet", source, target, quotedStatus});
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(target));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(quotedStatus));
         notifyResponse();
     }
 
