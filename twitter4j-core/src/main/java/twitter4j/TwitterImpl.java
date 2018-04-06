@@ -59,9 +59,16 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             boolean contributorsEnabled = conf.getContributingTo() != -1L;
             if (contributorsEnabled) {
                 if (!"".equals(implicitParamsStr)) {
-                    implicitParamsStr += "?";
+                    implicitParamsStr += "&";
                 }
                 implicitParamsStr += "contributingto=" + conf.getContributingTo();
+            }
+
+            if (conf.isTweetModeExtended()) {
+                if (!"".equals(implicitParamsStr)) {
+                    implicitParamsStr += "&";
+                }
+                implicitParamsStr += "tweet_mode=extended";
             }
 
             List<HttpParameter> params = new ArrayList<HttpParameter>(3);
@@ -277,6 +284,19 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
+    public DirectMessageEventList getDirectMessageEvents(int count) throws TwitterException {
+        return factory.createDirectMessageEventList(get(conf.getRestBaseURL() + "direct_messages/events/list.json"
+                , new HttpParameter("count", count) ));
+    }
+
+    @Override
+    public DirectMessageEventList getDirectMessageEvents(int count, String cursor) throws TwitterException {
+        return factory.createDirectMessageEventList(get(conf.getRestBaseURL() + "direct_messages/events/list.json"
+                , new HttpParameter("count", count)
+                , new HttpParameter("cursor", cursor)));
+    }
+
+    @Override
     public ResponseList<DirectMessage> getSentDirectMessages() throws TwitterException {
         return factory.createDirectMessageList(get(conf.getRestBaseURL() + "direct_messages/sent.json?full_text=true"));
     }
@@ -295,10 +315,35 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public DirectMessage destroyDirectMessage(long id) throws
-        TwitterException {
+    public DirectMessageEvent showDirectMessageEvent(long id) throws TwitterException {
+        return factory.createDirectMessageEvent(get(conf.getRestBaseURL() + "direct_messages/events/show.json?id=" + id));
+    }
+
+    @Override
+    public DirectMessage destroyDirectMessage(long id) throws TwitterException {
         return factory.createDirectMessage(post(conf.getRestBaseURL() + "direct_messages/destroy.json?id=" + id
             + "&full_text=true"));
+    }
+
+    @Override
+    public void destroyDirectMessageEvent(long id) throws TwitterException {
+        ensureAuthorizationEnabled();
+        http.delete(conf.getRestBaseURL() + "direct_messages/events/destroy.json?id=" + id, null, auth, null);
+    }
+
+    @Override
+    public DirectMessageEvent createMessage(MessageData messageData)
+            throws TwitterException {
+        try {
+            final JSONObject json = new JSONObject();
+            final JSONObject event = new JSONObject();
+            event.put("type", "message_create");
+            event.put("message_create", messageData.createMessageCreateJsonObject());
+            json.put("event", event);
+            return factory.createDirectMessageEvent(post(conf.getRestBaseURL() + "direct_messages/events/new.json", json));
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
     }
 
     @Override
@@ -1819,6 +1864,24 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             long start = System.currentTimeMillis();
             try {
                 response = http.post(url, mergeImplicitParams(params), auth, this);
+            } finally {
+                long elapsedTime = System.currentTimeMillis() - start;
+                TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
+            }
+            return response;
+        }
+    }
+
+    private HttpResponse post(String url, JSONObject json) throws TwitterException {
+        ensureAuthorizationEnabled();
+        if (!conf.isMBeanEnabled()) {
+            return http.post(url, new HttpParameter[]{new HttpParameter(json)}, auth, this);
+        } else {
+            // intercept HTTP call for monitoring purposes
+            HttpResponse response = null;
+            long start = System.currentTimeMillis();
+            try {
+                response = http.post(url, new HttpParameter[]{new HttpParameter(json)}, auth, this);
             } finally {
                 long elapsedTime = System.currentTimeMillis() - start;
                 TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
